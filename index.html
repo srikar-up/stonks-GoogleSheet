@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stonks</title> <!-- Updated Title -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: 'class' };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f1f5f9; }
+      .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #0f172a; }
+      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+      .hidden-section { display: none; }
+      .fade-in { animation: fadeIn 0.3s ease-in-out; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+      
+      .group:hover .group-hover\:opacity-100 { animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+      @keyframes popIn { from { opacity: 0; transform: translate(-50%, 10px) scale(0.95); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+    </style>
+  </head>
+  <body class="p-4 sm:p-6 min-h-screen">
+
+    <div class="max-w-7xl mx-auto space-y-6">
+      
+      <!-- HEADER -->
+      <div class="card p-4 flex flex-col md:flex-row justify-between items-center gap-4 shadow-lg">
+        <div class="flex items-center gap-4">
+          <div class="bg-indigo-500/10 p-3 rounded-lg text-indigo-400">
+            <!-- Chart Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <div>
+            <!-- Updated Header Name -->
+            <h1 class="text-xl font-bold text-white tracking-tight">Stonks 📈</h1>
+            <p class="text-xs text-slate-400" id="statusMsg">Ready</p>
+          </div>
+        </div>
+        
+        <div class="flex flex-wrap gap-3 justify-center md:justify-end">
+          <select id="yearFilter" onchange="filterData()" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-lg p-2.5 outline-none focus:border-indigo-500 cursor-pointer min-w-[100px]">
+            <option value="All">All Years</option>
+          </select>
+          <select id="monthFilter" onchange="filterData()" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-lg p-2.5 outline-none focus:border-indigo-500 cursor-pointer min-w-[120px]">
+            <option value="All">All Months</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select>
+          <button onclick="openModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-lg transition flex items-center gap-2 shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Add
+          </button>
+        </div>
+      </div>
+
+      <!-- ADVISOR BANNER -->
+      <div class="card p-5 border-l-4 border-l-yellow-500 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-800/50 relative overflow-visible">
+        <div class="flex gap-4 items-center">
+          <div class="text-yellow-400 bg-yellow-500/10 p-3 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <div class="flex items-center gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-1">Financial Advisor</h3>
+              <p id="advisorText" class="text-slate-300 text-sm leading-relaxed">Analyzing...</p>
+            </div>
+            <div class="relative group ml-2 cursor-pointer">
+              <i class="fas fa-question-circle text-slate-500 hover:text-yellow-400 transition text-lg"></i>
+              <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-64 p-3 bg-slate-900 text-xs text-slate-300 rounded-lg shadow-xl border border-slate-600 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 text-center leading-relaxed">
+                <span id="advisorLogicText">Logic will appear here...</span>
+                <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-500 uppercase font-semibold">Savings Rate</span>
+          <span id="savingsRateDisplay" class="text-2xl font-bold text-white block">0%</span>
+        </div>
+      </div>
+
+      <!-- KPI GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card p-6 bg-indigo-900/20 border-indigo-500/30 flex flex-col justify-between shadow-md">
+          <p class="text-indigo-300 text-sm font-medium uppercase tracking-wider">Net Cash</p>
+          <h2 class="text-4xl font-bold mt-2 text-white tracking-tight" id="kpiNet">...</h2>
+          <p class="text-slate-400 text-xs mt-2">Cash Flow (In - Out)</p>
+        </div>
+        <div class="card p-6 bg-slate-800 border-slate-700 flex flex-col justify-between shadow-md">
+          <div>
+            <p class="text-orange-400 text-sm font-medium uppercase tracking-wider flex items-center gap-2">
+              Outstanding Debt <span class="text-[10px] bg-orange-500/20 px-1 rounded text-orange-300">+ Interest</span>
+            </p>
+            <h2 class="text-4xl font-bold mt-2 text-white tracking-tight" id="kpiNetDebt">...</h2>
+          </div>
+          <p class="text-slate-400 text-xs mt-2" id="debtBreakdown">Principal vs Repaid</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card p-3 border-l-4 border-l-green-500">
+            <p class="text-[10px] text-slate-400 uppercase font-bold">Income</p>
+            <h3 class="text-lg font-bold text-green-400" id="kpiSavings">...</h3>
+          </div>
+          <div class="card p-3 border-l-4 border-l-red-500">
+            <p class="text-[10px] text-slate-400 uppercase font-bold">Expense</p>
+            <h3 class="text-lg font-bold text-red-400" id="kpiExpense">...</h3>
+          </div>
+          <div class="card p-3 border-l-4 border-l-purple-500">
+            <p class="text-[10px] text-slate-400 uppercase font-bold">Invested</p>
+            <h3 class="text-lg font-bold text-purple-400" id="kpiInvestment">...</h3>
+          </div>
+          <div class="card p-3 border-l-4 border-l-blue-500">
+            <p class="text-[10px] text-slate-400 uppercase font-bold">Invest %</p>
+            <h3 class="text-lg font-bold text-blue-400" id="kpiInvestRate">...</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 1 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card p-6 shadow-md">
+          <h3 class="font-semibold text-slate-200 mb-6">Cash Flow</h3>
+          <div class="h-64"><canvas id="flowChart"></canvas></div>
+        </div>
+        <div class="card p-6 shadow-md">
+          <h3 class="font-semibold text-slate-200 mb-6">Wealth Growth</h3>
+          <div class="h-64"><canvas id="growthChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 2 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card p-6 shadow-md">
+          <h3 class="font-semibold text-slate-200 mb-6 flex items-center gap-2">
+            <span class="w-1 h-5 bg-orange-500 rounded-full"></span> Debt Progress
+          </h3>
+          <div class="h-56 flex justify-center"><canvas id="debtChart"></canvas></div>
+        </div>
+        <div class="card p-6 shadow-md">
+          <h3 class="font-semibold text-slate-200 mb-6 flex items-center gap-2">
+            <span class="w-1 h-5 bg-indigo-500 rounded-full"></span> Outflow Breakdown
+          </h3>
+          <div class="h-56 flex justify-center"><canvas id="distributionChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card overflow-hidden shadow-md flex flex-col">
+        <div class="p-5 border-b border-slate-700 bg-slate-800/50">
+          <h3 class="font-semibold text-slate-200">Recent Transactions</h3>
+        </div>
+        <div class="overflow-x-auto max-h-80 flex-1">
+          <table class="w-full text-sm text-left text-slate-400">
+            <thead class="text-xs uppercase bg-slate-900 text-slate-500 sticky top-0">
+              <tr>
+                <th class="px-6 py-3">Date</th>
+                <th class="px-6 py-3">Category</th>
+                <th class="px-6 py-3">Type</th>
+                <th class="px-6 py-3 text-right">Amt</th>
+                <th class="px-6 py-3 text-center">Details</th>
+                <th class="px-6 py-3 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="transactionTableBody" class="divide-y divide-slate-700/50"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MODAL -->
+    <div id="entryModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-md shadow-2xl overflow-hidden">
+        <div class="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-800">
+          <h3 class="text-lg font-bold text-white">Add Transaction</h3>
+          <button onclick="closeModal()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="p-6">
+          <form id="addForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Year</label>
+                <input type="number" name="year" id="inputYear" onchange="updateCategoryOptions()" onkeyup="updateCategoryOptions()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none" required>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Month</label>
+                <select name="month" id="inputMonth" onchange="updateCategoryOptions()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none">
+                  <option>January</option><option>February</option><option>March</option><option>April</option>
+                  <option>May</option><option>June</option><option>July</option><option>August</option>
+                  <option>September</option><option>October</option><option>November</option><option>December</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Type</label>
+              <select name="type" id="inputType" onchange="handleTypeChange()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none">
+                <option value="Expense" selected>Expense</option>
+                <option value="Savings">Income/Savings</option>
+                <option value="Debt Taken">Debt Taken (Borrow)</option>
+                <option value="Debt Repayment">Debt Repayment (Pay Back)</option>
+                <option value="Investment">Investment</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Category</label>
+              <select name="category" id="inputCategory" onchange="handleCategorySelect()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none"></select>
+              <p id="debtDueHint" class="text-xs text-orange-400 mt-1 hidden"></p>
+            </div>
+            <div id="debtFields" class="hidden-section space-y-4 p-4 bg-slate-900 rounded-lg border border-slate-700 fade-in">
+              <div>
+                <label class="text-xs font-bold text-orange-400 uppercase mb-1 block">Interest Rate (% p.a.)</label>
+                <input type="number" name="interestRate" id="inputInterestRate" step="0.01" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white outline-none" placeholder="e.g. 12.5">
+              </div>
+              <div>
+                <label class="text-xs font-bold text-orange-400 uppercase mb-1 block">Interest Type</label>
+                <select name="interestType" id="inputInterestType" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white outline-none">
+                  <option value="IPA (Simple Interest)">IPA (Simple Interest)</option>
+                  <option value="CIPA (Compound Interest)">CIPA (Compound Interest)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Amount (INR)</label>
+              <div class="relative">
+                <span class="absolute left-3 top-2.5 text-slate-500">₹</span>
+                <input type="number" name="amount" id="inputAmount" step="0.01" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 pl-7 text-white outline-none" placeholder="0.00" required>
+              </div>
+            </div>
+            <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-lg transition">Save Entry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let globalData = [];
+      let charts = {};
+      let isSaving = false;
+
+      Chart.defaults.color = '#94a3b8';
+      Chart.defaults.borderColor = '#334155';
+      Chart.defaults.font.family = 'Inter';
+
+      window.onload = function() {
+        loadData();
+        document.getElementById('inputYear').value = new Date().getFullYear();
+        updateCategoryOptions();
+      };
+
+      function loadData() {
+        setLoading(true);
+        if (typeof google === 'undefined') {
+          const mock = [{ rowIndex: 0, year: 2025, month: 'January', amount: 100000, type: 'Savings', category: 'Salary', net: 100000 }];
+          setTimeout(() => initDashboard(mock), 500);
+        } else {
+          google.script.run
+            .withSuccessHandler(initDashboard)
+            .withFailureHandler(err => alert("Error: " + err.message))
+            .getDashboardData();
+        }
+      }
+
+      function setLoading(isLoading) {
+        const el = document.getElementById('statusMsg');
+        el.innerText = isLoading ? "Syncing..." : "Live";
+        el.className = isLoading ? "text-xs text-yellow-500 animate-pulse" : "text-xs text-green-500";
+      }
+
+      function initDashboard(data) {
+        globalData = data;
+        setLoading(false);
+        const years = [...new Set(data.map(item => item.year).filter(y => y))].sort();
+        const yearSelect = document.getElementById('yearFilter');
+        const current = yearSelect.value;
+        yearSelect.innerHTML = '<option value="All">All Years</option>';
+        years.forEach(y => {
+          const opt = document.createElement('option');
+          opt.value = y; opt.text = y;
+          yearSelect.appendChild(opt);
+        });
+        yearSelect.value = current;
+        filterData();
+      }
+
+      function filterData() {
+        const yearVal = document.getElementById('yearFilter').value;
+        const monthVal = document.getElementById('monthFilter').value;
+        const filtered = globalData.filter(row => {
+          const matchYear = yearVal === 'All' || row.year == yearVal;
+          const matchMonth = monthVal === 'All' || row.month === monthVal;
+          return matchYear && matchMonth;
+        });
+        updateKPIs(filtered, globalData);
+        renderCharts(filtered, globalData);
+        renderTable(filtered);
+      }
+
+      function parseAmount(val) {
+        if(!val) return 0;
+        return parseFloat(val.toString().replace(/[^0-9.-]+/g,"")) || 0;
+      }
+
+      function calculateProjectedInterest(principal, rate, type, startYear, startMonth, targetYear, targetMonth) {
+        if (!rate || rate <= 0) return 0;
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const sYear = parseInt(startYear);
+        const sMonth = months.indexOf(startMonth);
+        const startDate = new Date(sYear, sMonth, 1);
+        
+        const tYear = parseInt(targetYear);
+        const tMonth = months.indexOf(targetMonth);
+        const targetDate = new Date(tYear, tMonth, 1); 
+        
+        const diffTime = targetDate - startDate;
+        const timeInYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+        
+        if (timeInYears <= 0) return 0; 
+
+        if (type && type.includes("CIPA")) {
+           return (principal * Math.pow((1 + (rate / 100)), timeInYears)) - principal;
+        } else {
+           return principal * (rate / 100) * timeInYears;
+        }
+      }
+
+      function updateKPIs(data, allData) {
+        let savings = 0, expense = 0, debtRepaidPeriod = 0, investment = 0, net = 0;
+        
+        data.forEach(row => {
+          let val = parseAmount(row.amount);
+          if (row.type === "Savings" || row.type === "Debt Taken") net += val; 
+          else net -= val; 
+
+          if (row.type === "Savings") savings += val;
+          else if (row.type === "Expense") expense += val;
+          else if (row.type === "Debt Repayment") debtRepaidPeriod += val;
+          else if (row.type === "Investment") investment += val;
+        });
+
+        let totalPrincipal = 0, totalInterest = 0, totalRepaid = 0;
+        const today = new Date();
+        const curYear = today.getFullYear();
+        const curMonth = ["January","February","March","April","May","June","July","August","September","October","November","December"][today.getMonth()];
+
+        allData.forEach(row => {
+          let val = parseAmount(row.amount);
+          if (row.type === "Debt Taken") {
+            totalPrincipal += val;
+            totalInterest += calculateProjectedInterest(val, row.interestRate, row.interestType, row.year, row.month, curYear, curMonth);
+          }
+          else if (row.type === "Debt Repayment") {
+            totalRepaid += val;
+          }
+        });
+
+        let outstandingDebt = (totalPrincipal + totalInterest) - totalRepaid;
+
+        document.getElementById('kpiSavings').innerText = formatINR(savings);
+        document.getElementById('kpiExpense').innerText = formatINR(expense);
+        document.getElementById('kpiInvestment').innerText = formatINR(investment);
+        document.getElementById('kpiNet').innerText = formatINR(net);
+        document.getElementById('kpiInvestRate').innerText = savings > 0 ? ((investment/savings)*100).toFixed(1) + "%" : "0%";
+        
+        const debtEl = document.getElementById('kpiNetDebt');
+        debtEl.innerText = formatINR(outstandingDebt);
+        debtEl.className = outstandingDebt > 0 ? "text-4xl font-bold mt-2 text-red-400 tracking-tight" : "text-4xl font-bold mt-2 text-green-400 tracking-tight";
+        
+        document.getElementById('debtBreakdown').innerHTML = `
+          Principal: ${formatINR(totalPrincipal)} | 
+          <span class="text-orange-400">Interest: ${formatINR(totalInterest)}</span> | 
+          Paid: ${formatINR(totalRepaid)}
+        `;
+
+        let income = savings;
+        let rate = income > 0 ? ((income - expense - debtRepaidPeriod) / income * 100) : 0;
+        const savingsRateEl = document.getElementById('savingsRateDisplay');
+        if(savingsRateEl) savingsRateEl.innerText = rate.toFixed(1) + "%";
+        
+        let msg = "Analyzing...", logic = "No data.";
+        if (income === 0) { msg = "Add income."; logic = "Income is 0."; }
+        else if (debtRepaidPeriod > (income * 0.3)) { msg = "⚠️ High debt load."; logic = `Repayment is ${(debtRepaidPeriod/income*100).toFixed(0)}% of income (Max 30%).`; }
+        else if (outstandingDebt > (income * 3)) { msg = "🚨 Critical debt."; logic = `Debt is ${(outstandingDebt/income).toFixed(1)}x annual income.`; }
+        else if (investment < (income * 0.1) && rate > 30) { msg = "💡 Cash heavy."; logic = `Saving ${rate.toFixed(0)}% but investing only ${((investment/income)*100).toFixed(0)}%.`; }
+        else if (investment > (income * 0.2)) { msg = "🌟 Great investing!"; logic = `Investing ${((investment/income)*100).toFixed(0)}% of income.`; }
+        else { msg = "✅ Stable finances."; logic = "Debt < 30%, Savings > 20%."; }
+        
+        document.getElementById('advisorText').innerText = msg;
+        document.getElementById('advisorLogicText').innerText = logic;
+      }
+
+      function renderCharts(data, allData) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        let inc = new Array(12).fill(0), exp = new Array(12).fill(0);
+        let outflowStats = { 'Expense': 0, 'Investment': 0, 'Debt Repayment': 0 };
+        
+        data.forEach(r => {
+           let idx = months.indexOf(r.month);
+           let v = parseAmount(r.amount);
+           if (r.type === 'Savings' || r.type === 'Debt Taken') { if(idx > -1) inc[idx] += v; } 
+           else { if(idx > -1) exp[idx] += v; }
+
+           if (r.type === 'Expense') outflowStats['Expense'] += v;
+           else if (r.type === 'Investment') outflowStats['Investment'] += v;
+           else if (r.type === 'Debt Repayment') outflowStats['Debt Repayment'] += v;
+        });
+
+        let totalDebtPrincipal = 0, totalDebtInterest = 0, totalDebtRepaid = 0;
+        const today = new Date();
+        const curYear = today.getFullYear();
+        const curMonth = months[today.getMonth()];
+
+        allData.forEach(r => {
+           let v = parseAmount(r.amount);
+           if (r.type === 'Debt Taken') { 
+             totalDebtPrincipal += v; 
+             totalDebtInterest += calculateProjectedInterest(v, r.interestRate, r.interestType, r.year, r.month, curYear, curMonth);
+           } 
+           else if (r.type === 'Debt Repayment') { totalDebtRepaid += v; }
+        });
+
+        const render = (id, key, config) => {
+            const canvas = document.getElementById(id);
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if(!ctx) return;
+            if (charts[key]) { charts[key].destroy(); charts[key] = null; }
+            charts[key] = new Chart(ctx, config);
+        };
+
+        render('flowChart', 'flow', {
+          type: 'bar',
+          data: { labels: months.map(m=>m.substring(0,3)), datasets: [{ label: 'In', data: inc, backgroundColor: '#10b981' }, { label: 'Out', data: exp, backgroundColor: '#ef4444' }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } } } }
+        });
+
+        let net = 0, growth = months.map((m, i) => { net += (inc[i] - exp[i]); return net; });
+        render('growthChart', 'growth', {
+          type: 'line',
+          data: { labels: months.map(m=>m.substring(0,3)), datasets: [{ label: 'Net Worth', data: growth, borderColor: '#6366f1', backgroundColor: '#6366f120', fill: true }] },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        render('distributionChart', 'dist', {
+          type: 'doughnut',
+          data: { labels: Object.keys(outflowStats), datasets: [{ data: Object.values(outflowStats), backgroundColor: ['#ef4444', '#a855f7', '#f97316'], borderWidth: 0 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } } }
+        });
+
+        let totalLiability = totalDebtPrincipal + totalDebtInterest;
+        let outstanding = totalLiability - totalDebtRepaid;
+        let debtData = totalLiability === 0 ? [1] : outstanding <= 0 ? [totalLiability] : [totalDebtRepaid, outstanding];
+        let debtColors = totalLiability === 0 ? ['#334155'] : outstanding <= 0 ? ['#10b981'] : ['#10b981', '#ef4444'];
+        let debtLabels = totalLiability === 0 ? ['No Debt'] : outstanding <= 0 ? ['Fully Paid'] : ['Paid', 'Outstanding'];
+
+        render('debtChart', 'debt', {
+          type: 'pie',
+          data: { labels: debtLabels, datasets: [{ data: debtData, backgroundColor: debtColors, borderWidth: 0 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } } }
+        });
+      }
+
+      function renderTable(data) {
+        const tbody = document.getElementById('transactionTableBody');
+        tbody.innerHTML = '';
+        data.slice().reverse().slice(0, 50).forEach(r => {
+           let c = r.type === 'Savings' ? 'text-green-400' : r.type === 'Debt Taken' ? 'text-red-400' : r.type === 'Debt Repayment' ? 'text-orange-400' : 'text-slate-400';
+           let details = '-';
+           if (r.type === 'Debt Taken' && r.interestRate > 0) {
+             details = `<div class="flex flex-col text-[10px] leading-tight"><span class="text-orange-300">${r.interestRate}% ${r.interestType ? r.interestType.substring(0,3) : ''}</span><span class="text-slate-500">+${formatINR(r.accruedInterest||0)}</span></div>`;
+           }
+           tbody.insertAdjacentHTML('beforeend', `
+             <tr class="hover:bg-slate-800/50 transition-colors border-b border-slate-800/50 last:border-0">
+               <td class="px-6 py-4 text-slate-500">${r.month} ${r.year}</td>
+               <td class="px-6 py-4 text-slate-200 font-medium">${r.category}</td>
+               <td class="px-6 py-4 ${c} text-xs uppercase tracking-wide font-bold">${r.type}</td>
+               <td class="px-6 py-4 text-right font-mono text-slate-300">${formatINR(parseAmount(r.amount))}</td>
+               <td class="px-6 py-4 text-center">${details}</td>
+               <td class="px-6 py-4 text-center"><button onclick="deleteRow(${r.rowIndex})" class="text-slate-600 hover:text-red-400 transition"><i class="fas fa-trash"></i></button></td>
+             </tr>`);
+        });
+      }
+
+      function formatINR(n) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n); }
+      
+      function handleTypeChange() {
+        document.getElementById('inputAmount').value = "";
+        updateCategoryOptions();
+        const type = document.getElementById('inputType').value;
+        const debtSection = document.getElementById('debtFields');
+        if (type === 'Debt Taken') debtSection.style.display = 'block';
+        else debtSection.style.display = 'none';
+      }
+
+      function updateCategoryOptions() {
+        const type = document.getElementById('inputType').value;
+        const catSelect = document.getElementById('inputCategory');
+        const hint = document.getElementById('debtDueHint');
+        
+        const tYear = document.getElementById('inputYear').value;
+        const tMonth = document.getElementById('inputMonth').value;
+
+        hint.classList.add('hidden'); 
+        let options = [];
+
+        if (type === "Debt Repayment") {
+          const debts = {};
+          globalData.forEach(r => {
+            let amt = parseAmount(r.amount);
+            if (r.type === 'Debt Taken') {
+              if (!debts[r.category]) debts[r.category] = { total: 0, paid: 0 };
+              let projectedInterest = calculateProjectedInterest(amt, r.interestRate, r.interestType, r.year, r.month, tYear, tMonth);
+              debts[r.category].total += (amt + projectedInterest);
+            } else if (r.type === 'Debt Repayment') {
+              if (!debts[r.category]) debts[r.category] = { total: 0, paid: 0 };
+              debts[r.category].paid += amt;
+            }
+          });
+
+          options = Object.keys(debts).map(k => {
+            let due = debts[k].total - debts[k].paid;
+            if (due > 1) return { val: k, text: `${k} (Due: ${formatINR(due)})`, due: due };
+            return null;
+          }).filter(x => x);
+
+          if (options.length === 0) {
+            catSelect.innerHTML = '<option disabled selected>No Pending Debts</option>';
+          } else {
+            catSelect.innerHTML = options.map(o => `<option value="${o.val}" data-due="${o.due}">${o.text}</option>`).join('');
+            setTimeout(handleCategorySelect, 50);
+          }
+        } 
+        else {
+          if (type === "Expense") options = ['Rent/EMI', 'Food', 'Groceries', 'Travel', 'Shopping', 'Medical', 'Bills', 'Entertainment'];
+          else if (type === "Debt Taken") options = ['Personal Loan', 'Credit Card Swipe', 'Borrowed from Friend', 'Car Loan Disbursed', 'Home Loan Disbursed'];
+          else if (type === "Investment") options = ['Stocks', 'SIP', 'Gold', 'Crypto', 'FD', 'Real Estate'];
+          else options = ['Salary', 'Bonus', 'Business Profit', 'Rent Income', 'Interest'];
+          catSelect.innerHTML = options.map(i => `<option>${i}</option>`).join('');
+        }
+      }
+
+      function handleCategorySelect() {
+        const type = document.getElementById('inputType').value;
+        if (type === 'Debt Repayment') {
+          const sel = document.getElementById('inputCategory');
+          const due = sel.options[sel.selectedIndex]?.dataset.due;
+          const hint = document.getElementById('debtDueHint');
+          if(due) {
+            hint.innerText = "Full Outstanding: " + formatINR(due);
+            hint.classList.remove('hidden');
+            document.getElementById('inputAmount').value = parseFloat(due).toFixed(2);
+          }
+        } else {
+            document.getElementById('debtDueHint').classList.add('hidden');
+        }
+      }
+
+      function resetForm() {
+        document.getElementById('addForm').reset();
+        document.getElementById('inputType').value = "Expense";
+        document.getElementById('inputAmount').value = "";
+        handleTypeChange();
+        document.getElementById('inputYear').value = new Date().getFullYear();
+      }
+
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        if(isSaving) return;
+        
+        const btn = document.getElementById('submitBtn');
+        const orig = btn.innerText;
+        
+        isSaving = true;
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+        
+        const fd = {
+          year: e.target.year.value, month: e.target.month.value, type: e.target.type.value, category: e.target.category.value, amount: e.target.amount.value,
+          interestRate: e.target.interestRate ? e.target.interestRate.value : "",
+          interestType: e.target.interestType ? e.target.interestType.value : ""
+        };
+
+        if(typeof google !== 'undefined') {
+          google.script.run
+            .withSuccessHandler(() => {
+               closeModal();
+               resetForm();
+               loadData();
+               btn.innerText = orig;
+               btn.disabled = false;
+               isSaving = false;
+            })
+            .withFailureHandler((err) => {
+               alert("Error: " + err.message);
+               btn.innerText = orig;
+               btn.disabled = false;
+               isSaving = false;
+            })
+            .addTransaction(fd);
+        } else { 
+          closeModal(); alert("Preview Mode"); isSaving = false; btn.disabled = false; 
+        }
+      }
+      
+      function deleteRow(i) { if(confirm("Delete?")) if(typeof google !== 'undefined') google.script.run.withSuccessHandler(loadData).deleteTransaction(i); }
+      function openModal() { document.getElementById('entryModal').classList.remove('hidden'); handleTypeChange(); }
+      function closeModal() { document.getElementById('entryModal').classList.add('hidden'); resetForm(); }
+    </script>
+  </body>
+</html>
