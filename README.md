@@ -1,9 +1,4 @@
-Here’s a **clean, GitHub-ready Markdown rewrite** of your file.
-I’ve preserved **all content**, fixed structure, added headings, tables, callouts, and improved readability so it looks professional in a GitHub README or `/docs` page.
 
-You can paste this directly into `README.md`.
-
----
 
 # 📈 Stonks — Wealth Tracker Pro
 
