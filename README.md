@@ -1,313 +1,372 @@
-Stonks 📈 - Wealth Tracker Pro
+Here’s a **clean, GitHub-ready Markdown rewrite** of your file.
+I’ve preserved **all content**, fixed structure, added headings, tables, callouts, and improved readability so it looks professional in a GitHub README or `/docs` page.
 
-Comprehensive User Manual & Deployment Guide
+You can paste this directly into `README.md`.
 
-Version: 1.0
+---
 
-Platform: Google Sheets + Google Apps Script Web App
+# 📈 Stonks — Wealth Tracker Pro
 
-License: Open Source / Personal Use
+**Comprehensive User Manual & Deployment Guide**
 
-1. Executive Summary
+> **Version:** 1.0
+> **Platform:** Google Sheets + Google Apps Script (Web App)
+> **License:** Open Source / Personal Use
 
-Stonks is a professional-grade, self-hosted financial dashboard designed for individuals who prioritize data privacy and granular control over their wealth tracking. Unlike commercial budgeting apps, Stonks operates entirely within your personal Google Ecosystem.
+---
 
-It features a Real-Time Debt Engine that calculates accrued interest daily, a Smart Repayment System that prevents calculation errors during debt payoff, and a Logic-Based Financial Advisor that audits your financial health instantly.
+## 1. Executive Summary
 
-Core Capabilities
+**Stonks** is a professional-grade, self-hosted financial dashboard designed for individuals who prioritize **data privacy**, **accuracy**, and **full control** over their wealth tracking.
 
-Liquid Asset Tracking: Monitors real-time cash flow (Income vs. Expenses).
+Unlike commercial budgeting apps, Stonks runs entirely inside your **personal Google ecosystem** — no third-party servers, no data leaks.
 
-Advanced Debt Management: Automatically calculates Simple (IPA) and Compound (CIPA) interest based on loan tenure.
+### 🔑 Key Highlights
 
-Smart Repayment: Auto-fills the exact outstanding balance (Principal + Interest - Paid) when selecting a loan to repay.
+* **Real-Time Debt Engine** – Calculates accrued interest daily
+* **Smart Repayment System** – Prevents over/under-payment errors
+* **Logic-Based Financial Advisor** – Instantly audits financial health
+* **Dark Mode Dashboard** – Responsive UI for desktop & mobile
 
-Financial Health Audit: Provides instant feedback on Savings Rate, Debt-to-Income Ratio, and Investment allocation.
+---
 
-Dark Mode Dashboard: A modern, responsive web interface that works on desktop and mobile.
+## 2. Core Capabilities
 
-2. Installation & Configuration
+* **Liquid Asset Tracking**
+  Tracks real-time cash flow (Income vs Expenses)
 
-Follow this guide to deploy your private instance of Stonks.
+* **Advanced Debt Management**
+  Supports:
 
-Step 1: Google Sheet Preparation
+  * IPA → Simple Interest
+  * CIPA → Compound Interest
 
-The Google Sheet acts as your database. The structure must be exact for the automation to function.
+* **Smart Repayment Engine**
+  Auto-calculates:
 
-Create a new Google Sheet at sheets.google.com.
+  ```
+  Outstanding = Principal + Interest – Paid
+  ```
 
-Rename the main tab to Sheet1 (default).
+* **Financial Health Audit**
 
-CRITICAL: Initialize Row 1 with the following case-sensitive headers in this specific order:
+  * Savings Rate
+  * Debt-to-Income Ratio
+  * Investment Allocation
 
-A1 Year
+* **Modern UI**
 
-B1 Month
+  * Dark mode
+  * Mobile friendly
+  * Fast load times
 
-C1 Amount
+---
 
-D1 Type
+## 3. Installation & Configuration
 
-E1 Category
+Follow these steps to deploy your **private instance of Stonks**.
 
-F1 Interest %
+---
 
-G1 Interest Type
+### Step 1: Google Sheet Preparation
 
-H1 Net Amount
+The Google Sheet acts as your **database**.
+⚠️ **Structure must be exact.**
 
-Step 2: Code Installation
+1. Create a new Google Sheet:
+   👉 [https://sheets.google.com](https://sheets.google.com)
 
-In your Google Sheet, navigate to the top menu: Extensions > Apps Script.
+2. Rename the default tab to:
 
-Backend Setup (Code.gs):
+   ```
+   Sheet1
+   ```
 
-Clear any existing code in the editor.
+3. Initialize **Row 1** with the following **case-sensitive headers** in this exact order:
 
-Paste the full Code.gs script provided in the distribution.
+| Column | Header        |
+| -----: | ------------- |
+|     A1 | Year          |
+|     B1 | Month         |
+|     C1 | Amount        |
+|     D1 | Type          |
+|     E1 | Category      |
+|     F1 | Interest %    |
+|     G1 | Interest Type |
+|     H1 | Net Amount    |
 
-Click Save (Floppy Disk Icon).
+---
 
-Frontend Setup (index.html):
+### Step 2: Code Installation
 
-Click the + (Plus) icon next to "Files" in the sidebar.
+#### Backend Setup (`Code.gs`)
 
-Select HTML.
+1. Open:
 
-Name the file index (The editor will automatically append .html).
+   ```
+   Extensions → Apps Script
+   ```
 
-Paste the full index.html code provided in the distribution.
+2. Delete any existing code
 
-Click Save.
+3. Paste the full `Code.gs` file from the distribution
 
-Step 3: System Initialization
+4. Click **Save** 💾
 
-Before using the app, the script must configure the sheet's validation rules.
+---
 
-Return to your Google Sheet browser tab and Refresh the page.
+#### Frontend Setup (`index.html`)
 
-Wait 5-10 seconds. A new custom menu titled "📈 Stonks" will appear in the toolbar (to the right of "Help").
+1. Click **➕** next to **Files**
+2. Select **HTML**
+3. Name it:
 
-Click 📈 Stonks > 🛠️ Fix All Dropdowns.
+   ```
+   index
+   ```
 
-Authorization:
+   (Apps Script auto-adds `.html`)
+4. Paste the full `index.html` code
+5. Click **Save**
 
-Google will ask for permission to run the script.
+---
 
-Click Continue -> Select your Google Account.
+### Step 3: System Initialization
 
-Note: You may see a "Google hasn't verified this app" warning (because it's a private script). Click Advanced -> Go to (Untitled Project) (unsafe) -> Allow.
+This step configures dropdowns & validation logic.
 
-Wait for the confirmation message: "✅ All Dropdowns Created!".
+1. Return to the Google Sheet
 
-Step 4: Web App Deployment
+2. **Refresh the page**
 
-Return to the Apps Script window.
+3. Wait ~5–10 seconds
 
-Click the blue Deploy button (top right).
+4. A new menu appears:
 
-Select New deployment.
+   ```
+   📈 Stonks
+   ```
 
-Click the Gear Icon next to "Select type" and choose Web App.
+5. Run:
 
-Configuration Settings:
+   ```
+   📈 Stonks → 🛠️ Fix All Dropdowns
+   ```
 
-Description: v1.0 Initial Release
+#### Authorization Flow
 
-Execute as: Me (Your email address).
+* Click **Continue**
+* Choose your Google Account
+* If prompted:
 
-Who has access: Anyone with Google Account (This is recommended to prevent permission errors on mobile devices).
+  ```
+  Advanced → Go to (Untitled Project) → Allow
+  ```
 
-Click Deploy.
+✅ Success message:
 
-Copy the Web App URL. This is your permanent link to access the Stonks Dashboard. Bookmark it.
+```
+All Dropdowns Created!
+```
 
-3. Dashboard Operations Guide
+---
 
-The Dashboard is your primary interface for interacting with your finances.
+### Step 4: Web App Deployment
 
-A. Adding Transactions
+1. Open Apps Script
+2. Click **Deploy → New deployment**
+3. Select **Web App**
 
-Click the "Add" button in the top right header to open the transaction modal.
+#### Configuration
 
-1. Standard Transactions (Income / Expense / Investment)
+| Setting     | Value                      |
+| ----------- | -------------------------- |
+| Description | v1.0 Initial Release       |
+| Execute as  | Me                         |
+| Access      | Anyone with Google Account |
 
-Type: Select Expense, Savings, or Investment.
+4. Click **Deploy**
+5. Copy the **Web App URL**
+6. Bookmark it — this is your dashboard link 🔖
 
-Category: Choose from the dropdown (e.g., Food, Salary, Stocks).
+---
 
-Amount: Enter the value in INR.
+## 4. Dashboard Operations Guide
 
-Note: Interest fields are hidden and irrelevant for these types.
+The dashboard is your **primary interface**.
 
-2. Taking a Loan (Debt Taken)
+---
 
-Type: Select "Debt Taken".
+### A. Adding Transactions
 
-Category: Select "Personal Loan", "Home Loan", etc.
+Click **➕ Add** (top-right).
 
-Amount: Enter the Principal amount borrowed.
+---
 
-Interest Rate: Enter the annual interest rate (e.g., 10.5 for 10.5%).
+#### 1️⃣ Standard Transactions
 
-Interest Type:
+(Income / Expense / Investment)
 
-IPA (Simple Interest): Calculated on Principal only.
+* **Type:** Expense / Savings / Investment
+* **Category:** Food, Salary, Stocks, etc.
+* **Amount:** INR
 
-CIPA (Compound Interest): Calculated on Principal + Accumulated Interest.
+> Interest fields are hidden for these types.
 
-3. Paying Off Debt (Debt Repayment)
+---
 
-This feature uses the "Smart Repayment Engine".
+#### 2️⃣ Taking a Loan (Debt Taken)
 
-Type: Select "Debt Repayment".
+* **Type:** Debt Taken
+* **Category:** Personal Loan, Home Loan, etc.
+* **Amount:** Principal borrowed
+* **Interest Rate:** Annual % (e.g., `10.5`)
+* **Interest Type:**
 
-Category:
+  * `IPA` → Simple Interest
+  * `CIPA` → Compound Interest
 
-The dropdown will dynamically load only your active loans.
+---
 
-It displays the loan name alongside the Current Outstanding Balance (Principal + Interest accrued to date - Previous payments).
+#### 3️⃣ Paying Off Debt (Debt Repayment)
 
-Amount:
+Powered by the **Smart Repayment Engine**.
 
-Selecting a loan will automatically fill the Amount field with the exact figure needed to close the loan.
+* **Type:** Debt Repayment
 
-You can manually edit this amount if you are only making a partial payment (EMI).
+* **Category Dropdown:**
 
-B. Date & Filter Logic (Crucial Behavior)
+  * Shows only **active loans**
+  * Displays **current outstanding balance**
 
-Understanding how dates affect the numbers on your dashboard is essential for accurate tracking.
+* **Amount:**
 
-Metric
+  * Auto-filled with **exact payoff value**
+  * Editable for partial payments (EMI)
 
-Behavior
+---
 
-Income, Expense, Investments
+### B. Date & Filter Logic (Critical)
 
-Filtered View: These stats strictly follow the Year and Month dropdowns at the top. If you select "2025", you only see transactions from 2025.
+Understanding this ensures **accurate insights**.
 
-Outstanding Debt (KPI)
+| Metric                        | Behavior                                   |
+| ----------------------------- | ------------------------------------------ |
+| Income / Expense / Investment | Filtered by selected Year & Month          |
+| Outstanding Debt              | **Global (As of Today)** — ignores filters |
+| Debt Repayment Modal          | Uses selected transaction date             |
+| Charts                        | Context-aware (Year-based trends)          |
 
-Global View (As of Today): Debt is a continuous liability. The "Net Debt" card always shows your total outstanding balance calculated up to the current real-world date (Today), regardless of the dashboard filter. This ensures you always know your true liability.
+📌 **Debt is always calculated up to the real-world current date.**
 
-Debt Repayment (Modal)
+---
 
-Projected View: When paying a debt, the system calculates interest up to the Transaction Date you select in the form. 
+### C. Financial Advisor Logic
 
+The banner at the top audits your finances using **hierarchical rules**.
+Hover the `(?)` icon to see calculations.
 
+| Status         | Condition                         | Advice                       |
+| -------------- | --------------------------------- | ---------------------------- |
+| 🚨 Critical    | Debt > 3× Annual Income           | Focus only on debt reduction |
+| ⚠️ Warning     | EMI > 30% Income                  | Reduce repayment burden      |
+| ⚠️ Warning     | Expenses > 80% Income             | Cut discretionary spending   |
+| 💡 Opportunity | Savings > 30% & Investments < 10% | Invest surplus cash          |
+| 🌟 Excellent   | Investments > 20% Income          | Strong financial trajectory  |
+| ✅ Balanced     | None                              | Follow the 50/30/20 rule     |
 
-• If you select a Future Date (e.g., 2028), it projects the interest forward.
+---
 
+## 5. Backend Maintenance (Google Sheets)
 
+You can manage data directly in Sheets if needed.
 
-• If you select a Past Date, it calculates what was due at that time.
+---
 
-Charts
+### Automatic Data Cleaning
 
-Context Aware: The Cash Flow and Wealth Growth charts visualize data based on the selected Year filter to show trends over time.
+Triggered via `onEdit`:
 
-C. The Financial Advisor Logic
+* **Dropdown Sync**
+  Adjusts fields when transaction type changes
 
-The banner at the top uses a hierarchical logic engine to audit your finances. Hover over the (?) icon to see the specific math behind the advice.
+* **N/A Enforcement**
+  Clears interest fields for non-debt entries
 
-Status
+* **Net Amount Calculation**
+  Column **H** is auto-calculated
+  ❌ Do not edit manually
 
-Condition
+---
 
-Advice Logic
+### Troubleshooting Menu
 
-🚨 Critical
+Use when validation errors appear:
 
-Total Debt > 3x Annual Income
+```
+📈 Stonks → 🛠️ Fix All Dropdowns
+📈 Stonks → 🔄 Force Recalculate
+```
 
-Focus purely on debt reduction. Avoid new liabilities.
+---
 
-⚠️ Warning
+## 6. Technical Specifications
 
-Debt Repayment > 30% of Income
+### Financial Formulas
 
-Your debt burden is too high. Reduce EMI obligations.
+#### Net Cash (Liquidity)
 
-⚠️ Warning
+```
+Net Cash = (Income + Debt Taken)
+         – (Expenses + Debt Repaid + Investments)
+```
 
-Expenses > 80% of Income
+---
 
-You are living paycheck to paycheck. Cut discretionary spending.
+#### Outstanding Debt (Per Loan)
 
-💡 Opportunity
+```
+Outstanding = (Principal + Accrued Interest) – Total Repaid
+```
 
-Savings > 30% & Investments < 10%
+---
 
-You are hoarding cash. Move surplus funds into investments to beat inflation.
+#### Simple Interest (IPA)
 
-🌟 Excellent
+```
+I = P × r × t
+```
 
-Investments > 20% of Income
+`t` = time in years since loan date
 
-You are on the fast track to financial independence.
+---
 
-✅ Balanced
+#### Compound Interest (CIPA)
 
-None of the above
+```
+A = P × (1 + r)^t – P
+```
 
-Maintain the 50/30/20 rule (Needs/Wants/Savings).
+---
 
-4. Backend Maintenance (Google Sheets)
+### Browser Compatibility
 
-While the dashboard is preferred, you can manage data directly in the Google Sheet.
+* **Desktop:** Chrome, Firefox, Edge, Safari (Latest)
+* **Mobile:** Fully responsive (iOS & Android)
 
-Automatic Data Cleaning
+---
 
-The script contains an onEdit trigger that runs whenever you edit the sheet manually.
+## 🚀 Stonks Finance System
 
-Dropdown Sync: If you change a row's type from "Expense" to "Debt Taken", the correct dropdowns for Interest Rate appear automatically.
+**Empowering Financial Independence — One Sheet at a Time.**
 
-N/A Enforcement: If you change a "Debt Taken" row to "Expense", the script wipes the Interest columns and sets them to "N/A" to prevent database corruption.
+---
 
-Net Amount Calculation: The script calculates the Net Amount (Column H) automatically. Do not manually edit Column H.
+If you want, I can also:
 
-Troubleshooting Menu
+* Split this into `/docs` pages
+* Add badges & screenshots
+* Convert it into a **GitHub Wiki**
+* Create a **Quick Start** version
 
-If the sheet behaves unexpectedly (e.g., red error triangles appear), use the custom menu:
-
-📈 Stonks > 🛠️ Fix All Dropdowns: Re-scans the entire sheet and repairs validation rules.
-
-📈 Stonks > 🔄 Force Recalculate: Re-runs the math for the "Net Amount" column for all rows.
-
-5. Technical Specifications
-
-Formulas Used
-
-Net Cash (Liquidity)
-
-
-$$Net Cash = (Income + Debt Taken) - (Expenses + Debt Repaid + Investments)$$
-
-Outstanding Debt (Per Loan)
-
-
-$$Outstanding = (Principal + Accrued Interest) - Total Repaid$$
-
-Simple Interest (IPA)
-
-
-$$I = P \times r \times t$$
-
-
-Where $t$ is time in years calculated from the Loan Date to the Current Date.
-
-Compound Interest (CIPA)
-
-
-$$A = P \times (1 + r)^t - P$$
-
-
-Calculates total interest accrued over time $t$.
-
-Browser Compatibility
-
-Desktop: Chrome, Firefox, Edge, Safari (Latest versions).
-
-Mobile: Fully responsive on iOS and Android via browser.
-
-Stonks 📈 Finance System - Empowering Financial Independence.
+Just tell me 👍
