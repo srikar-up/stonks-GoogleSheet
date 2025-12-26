@@ -1,367 +1,343 @@
 
 
-# 📈 Stonks — Wealth Tracker Pro
+---
 
-**Comprehensive User Manual & Deployment Guide**
+# 🎮 GameUp Sheets — STONKS Life OS
 
-> **Version:** 1.0
-> **Platform:** Google Sheets + Google Apps Script (Web App)
-> **License:** Open Source / Personal Use
+**A Gamified Personal Productivity Dashboard**
+
+> Turn your life into an RPG — earn XP, level up, and unlock rewards for real-world progress.
 
 ---
 
-## 1. Executive Summary
+## 📌 Overview
 
-**Stonks** is a professional-grade, self-hosted financial dashboard designed for individuals who prioritize **data privacy**, **accuracy**, and **full control** over their wealth tracking.
+**GameUp Sheets** is a fully gamified **Life OS** built entirely using **Google Sheets** and **Google Apps Script**.
 
-Unlike commercial budgeting apps, Stonks runs entirely inside your **personal Google ecosystem** — no third-party servers, no data leaks.
+It transforms everyday productivity — tasks, habits, counters, notes, and events — into an **RPG-style experience** where every action earns XP and contributes to your long-term growth.
 
-### 🔑 Key Highlights
-
-* **Real-Time Debt Engine** – Calculates accrued interest daily
-* **Smart Repayment System** – Prevents over/under-payment errors
-* **Logic-Based Financial Advisor** – Instantly audits financial health
-* **Dark Mode Dashboard** – Responsive UI for desktop & mobile
+* **Backend:** Google Sheets + Apps Script (`code.gs`)
+* **Frontend:** Dark-mode Web App (`index.html`)
+* **Hosting:** Google (No server required)
+* **Privacy:** 100% self-hosted in your Google Account
 
 ---
 
-## 2. Core Capabilities
+## ✨ Features
 
-* **Liquid Asset Tracking**
-  Tracks real-time cash flow (Income vs Expenses)
+---
 
-* **Advanced Debt Management**
-  Supports:
+### ⚔️ Quest System (Task Tracker)
 
-  * IPA → Simple Interest
-  * CIPA → Compound Interest
+Turn your to-do list into **Quests** with ranks, XP, and rewards.
 
-* **Smart Repayment Engine**
-  Auto-calculates:
+#### Quest Ranks & XP
+
+| Rank      | Priority | XP      |
+| --------- | -------- | ------- |
+| 🥇 Gold   | High     | +150 XP |
+| 🥈 Silver | Medium   | +100 XP |
+| 🥉 Bronze | Low      | +50 XP  |
+| 🛡️ Steel | Trivial  | +20 XP  |
+
+#### Quest Types
+
+* **Repeating** → Resets daily (perfect for routines)
+* **Daily / Monthly** → Fixed deadlines
+* **Reminder** → Simple alert tasks
+
+#### Quest Enhancements
+
+* 🎁 **Rewards** – Attach real-life rewards (e.g., *Ice Cream*)
+* 📊 **Progress Bars** – Multi-step targets
 
   ```
-  Outstanding = Principal + Interest – Paid
+  Read 10 pages → 0 / 10
   ```
 
-* **Financial Health Audit**
+---
 
-  * Savings Rate
-  * Debt-to-Income Ratio
-  * Investment Allocation
+### 📈 “Work” Counters
 
-* **Modern UI**
+A dedicated system for **grinding without deadlines**.
 
-  * Dark mode
-  * Mobile friendly
-  * Fast load times
+Perfect for:
+
+* Pushups
+* DSA problems
+* Pages read
+* Study hours
+
+**Mechanics**
+
+* +10 XP per increment
+* One-tap counting
+* Optimistic UI + 🎉 confetti effects
 
 ---
 
-## 3. Installation & Configuration
+### 📝 Notes & Memory System
 
-Follow these steps to deploy your **private instance of Stonks**.
+A lightweight digital memory layer.
 
----
+* **Permanent Notes**
+  Persist until manually deleted
 
-### Step 1: Google Sheet Preparation
+* **Temporary Notes**
 
-The Google Sheet acts as your **database**.
-⚠️ **Structure must be exact.**
+  * Auto-expire after *N* days
+  * Hidden automatically when expired
 
-1. Create a new Google Sheet:
-   👉 [https://sheets.google.com](https://sheets.google.com)
+Great for:
 
-2. Rename the default tab to:
-
-   ```
-   Sheet1
-   ```
-
-3. Initialize **Row 1** with the following **case-sensitive headers** in this exact order:
-
-| Column | Header        |
-| -----: | ------------- |
-|     A1 | Year          |
-|     B1 | Month         |
-|     C1 | Amount        |
-|     D1 | Type          |
-|     E1 | Category      |
-|     F1 | Interest %    |
-|     G1 | Interest Type |
-|     H1 | Net Amount    |
+* Reminders
+* Ideas
+* Short-term goals
 
 ---
 
-### Step 2: Code Installation
+### 📊 Dashboard & Stats
 
-#### Backend Setup (`Code.gs`)
+Track your progress visually with real metrics.
 
-1. Open:
+#### Included Analytics
 
-   ```
-   Extensions → Apps Script
-   ```
+* **Leveling System**
 
-2. Delete any existing code
+  * XP bar
+  * Current Level display
 
-3. Paste the full `Code.gs` file from the distribution
+* **Charts (Chart.js)**
 
-4. Click **Save** 💾
+  * XP Trend (Yearly)
+  * Quest Priority Breakdown
+  * Completion Status Rates
+
+* **Highlights**
+
+  * Best Month
+  * Total XP Earned
+  * Success Rate
 
 ---
 
-#### Frontend Setup (`index.html`)
+### ⏰ Utilities
 
-1. Click **➕** next to **Files**
-2. Select **HTML**
+Built-in productivity tools:
+
+* ⏱️ **Focus Timer** – Track deep work sessions
+* 🕰️ **IST Clock** – Live Indian Standard Time clock
+* 🎂 **Event Alerts**
+
+  * Birthdays & events
+  * Countdown appears when 0–10 days away
+
+---
+
+## 🛠️ Installation & Setup
+
+No server required — just a **Google Account**.
+
+---
+
+### Step 1: Create the Sheet
+
+1. Open **Google Sheets**
+2. Create a new blank spreadsheet
 3. Name it:
+
+   ```
+   GameUp Database
+   ```
+
+> ✅ **Optional:**
+> You do **not** need to manually create tabs or columns.
+> The system includes a **self-healing engine** that automatically creates:
+>
+> * Tracker
+> * Events
+> * Notes
+> * Counters
+> * History
+
+---
+
+### Step 2: Open Apps Script
+
+From your sheet:
+
+```
+Extensions → Apps Script
+```
+
+A new tab with the script editor will open.
+
+---
+
+### Step 3: Add the Code
+
+#### Backend Setup
+
+1. Rename the default file:
+
+   ```
+   Code.gs → code.gs
+   ```
+2. Paste the full contents of the provided `code.gs`
+3. Click **Save** 💾
+
+---
+
+#### Frontend Setup
+
+1. Click **➕** next to *Files*
+2. Select **HTML**
+3. Name the file:
 
    ```
    index
    ```
 
-   (Apps Script auto-adds `.html`)
-4. Paste the full `index.html` code
+   (Creates `index.html`)
+4. Paste the provided frontend code
 5. Click **Save**
 
 ---
 
-### Step 3: System Initialization
+### Step 4: Deploy Web App
 
-This step configures dropdowns & validation logic.
-
-1. Return to the Google Sheet
-
-2. **Refresh the page**
-
-3. Wait ~5–10 seconds
-
-4. A new menu appears:
-
-   ```
-   📈 Stonks
-   ```
-
-5. Run:
-
-   ```
-   📈 Stonks → 🛠️ Fix All Dropdowns
-   ```
-
-#### Authorization Flow
-
-* Click **Continue**
-* Choose your Google Account
-* If prompted:
-
-  ```
-  Advanced → Go to (Untitled Project) → Allow
-  ```
-
-✅ Success message:
-
-```
-All Dropdowns Created!
-```
-
----
-
-### Step 4: Web App Deployment
-
-1. Open Apps Script
-2. Click **Deploy → New deployment**
-3. Select **Web App**
+1. Click **Deploy → New deployment**
+2. Select **Web App** ⚙️
 
 #### Configuration
 
-| Setting     | Value                      |
-| ----------- | -------------------------- |
-| Description | v1.0 Initial Release       |
-| Execute as  | Me                         |
-| Access      | Anyone with Google Account |
+| Setting     | Value               |
+| ----------- | ------------------- |
+| Description | GameUp v1           |
+| Execute as  | Me                  |
+| Access      | Anyone (or Only Me) |
 
-4. Click **Deploy**
-5. Copy the **Web App URL**
-6. Bookmark it — this is your dashboard link 🔖
+3. Click **Deploy**
+4. Authorize permissions:
 
----
+   * Review permissions
+   * Advanced → Go to Project (unsafe)
+   * Allow
 
-## 4. Dashboard Operations Guide
-
-The dashboard is your **primary interface**.
-
----
-
-### A. Adding Transactions
-
-Click **➕ Add** (top-right).
+📌 **Copy the Web App URL** — this is your dashboard link.
 
 ---
 
-#### 1️⃣ Standard Transactions
+### Step 5: Setup Automation (Required for Repeating Quests)
 
-(Income / Expense / Investment)
+To auto-reset repeating quests daily:
 
-* **Type:** Expense / Savings / Investment
-* **Category:** Food, Salary, Stocks, etc.
-* **Amount:** INR
+1. Open **Triggers** ⏰ (left sidebar)
+2. Click **➕ Add Trigger**
 
-> Interest fields are hidden for these types.
+#### Trigger Configuration
 
----
+| Option       | Value                  |
+| ------------ | ---------------------- |
+| Function     | `resetRepeatingQuests` |
+| Event Source | Time-driven            |
+| Trigger Type | Day timer              |
+| Time         | Midnight – 1 AM        |
 
-#### 2️⃣ Taking a Loan (Debt Taken)
+3. Click **Save**
 
-* **Type:** Debt Taken
-* **Category:** Personal Loan, Home Loan, etc.
-* **Amount:** Principal borrowed
-* **Interest Rate:** Annual % (e.g., `10.5`)
-* **Interest Type:**
-
-  * `IPA` → Simple Interest
-  * `CIPA` → Compound Interest
+✅ Repeating quests will now reset every day.
 
 ---
 
-#### 3️⃣ Paying Off Debt (Debt Repayment)
-
-Powered by the **Smart Repayment Engine**.
-
-* **Type:** Debt Repayment
-
-* **Category Dropdown:**
-
-  * Shows only **active loans**
-  * Displays **current outstanding balance**
-
-* **Amount:**
-
-  * Auto-filled with **exact payoff value**
-  * Editable for partial payments (EMI)
+## 🚀 Usage Guide
 
 ---
 
-### B. Date & Filter Logic (Critical)
+### 🧭 Interface Navigation
 
-Understanding this ensures **accurate insights**.
+* **Top Pills:**
+  `Quests | Work | Notes | Stats`
+* **Floating Action Button (+):**
+  Add:
 
-| Metric                        | Behavior                                   |
-| ----------------------------- | ------------------------------------------ |
-| Income / Expense / Investment | Filtered by selected Year & Month          |
-| Outstanding Debt              | **Global (As of Today)** — ignores filters |
-| Debt Repayment Modal          | Uses selected transaction date             |
-| Charts                        | Context-aware (Year-based trends)          |
-
-📌 **Debt is always calculated up to the real-world current date.**
-
----
-
-### C. Financial Advisor Logic
-
-The banner at the top audits your finances using **hierarchical rules**.
-Hover the `(?)` icon to see calculations.
-
-| Status         | Condition                         | Advice                       |
-| -------------- | --------------------------------- | ---------------------------- |
-| 🚨 Critical    | Debt > 3× Annual Income           | Focus only on debt reduction |
-| ⚠️ Warning     | EMI > 30% Income                  | Reduce repayment burden      |
-| ⚠️ Warning     | Expenses > 80% Income             | Cut discretionary spending   |
-| 💡 Opportunity | Savings > 30% & Investments < 10% | Invest surplus cash          |
-| 🌟 Excellent   | Investments > 20% Income          | Strong financial trajectory  |
-| ✅ Balanced     | None                              | Follow the 50/30/20 rule     |
+  * Quest
+  * Counter
+  * Note
+  * Event
 
 ---
 
-## 5. Backend Maintenance (Google Sheets)
+### ⚔️ Managing Quests
 
-You can manage data directly in Sheets if needed.
-
----
-
-### Automatic Data Cleaning
-
-Triggered via `onEdit`:
-
-* **Dropdown Sync**
-  Adjusts fields when transaction type changes
-
-* **N/A Enforcement**
-  Clears interest fields for non-debt entries
-
-* **Net Amount Calculation**
-  Column **H** is auto-calculated
-  ❌ Do not edit manually
-
----
-
-### Troubleshooting Menu
-
-Use when validation errors appear:
+#### Adding Quests
 
 ```
-📈 Stonks → 🛠️ Fix All Dropdowns
-📈 Stonks → 🔄 Force Recalculate
++ → Quest → Set Target (default = 1)
 ```
+
+#### Completing Quests
+
+* Click **+** on the quest card
+* Progress fills visually
+* At 100%:
+
+  * Card turns green
+  * 🎉 Confetti
+  * XP logged to History
+
+#### Repeating Quests
+
+* Auto-reset to `0%` every night
+* Requires trigger setup (Step 5)
 
 ---
 
-## 6. Technical Specifications
+### 🗃️ Data Management
 
-### Financial Formulas
+All data lives in **Google Sheets**.
 
-#### Net Cash (Liquidity)
+* Manual edits are allowed
+* Useful for fixing mistakes (e.g., wrong counter increments)
 
-```
-Net Cash = (Income + Debt Taken)
-         – (Expenses + Debt Repaid + Investments)
-```
+#### ⚠️ History Tab
 
----
+* Acts as XP ledger
+* **Do not delete rows**
+* Required for:
 
-#### Outstanding Debt (Per Loan)
-
-```
-Outstanding = (Principal + Accrued Interest) – Total Repaid
-```
+  * Total XP
+  * Charts
+  * Stats accuracy
 
 ---
 
-#### Simple Interest (IPA)
+## 💻 Technologies Used
 
-```
-I = P × r × t
-```
+* **Google Apps Script** – Backend logic
+* **Google Sheets** – Database
+* **HTML5 / CSS3** – Dark-mode UI
+* **Chart.js** – Data visualization
+* **Canvas Confetti** – Victory effects
+* **Google Fonts**
 
-`t` = time in years since loan date
-
----
-
-#### Compound Interest (CIPA)
-
-```
-A = P × (1 + r)^t – P
-```
+  * Inter
+  * JetBrains Mono
 
 ---
 
-### Browser Compatibility
+## 📄 License
 
-* **Desktop:** Chrome, Firefox, Edge, Safari (Latest)
-* **Mobile:** Fully responsive (iOS & Android)
-
----
-
-## 🚀 Stonks Finance System
-
-**Empowering Financial Independence — One Sheet at a Time.**
+Licensed under the **MIT License**
+© 2025 **srikar-up**
 
 ---
 
-If you want, I can also:
+## ❤️ Credits
 
-* Split this into `/docs` pages
-* Add badges & screenshots
-* Convert it into a **GitHub Wiki**
-* Create a **Quick Start** version
+Built with passion by **srikar-up**
+**Game your life. Level up daily.**
 
-Just tell me 👍
+---
+
+
